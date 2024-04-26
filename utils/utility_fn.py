@@ -28,12 +28,10 @@ def extract_data_matrix_from_adata(adata, use_rep=None, torch_tensor=True, data_
 
 def check_isolation(adata, use_rep='X_fae', predict_pct=0.1):
     
-    if use_rep is None:
-        clf = IsolationForest(random_state=0, contamination=predict_pct).fit(adata.X)
-        node_IF_labels = clf.predict(adata.X)  # Get the anomaly labels for each data point
-    else:
-        clf = IsolationForest(random_state=0, contamination=predict_pct).fit(adata.obsm[use_rep])
-        node_IF_labels = clf.predict(adata.obsm[use_rep])  # Get the anomaly labels for each data point
+    feature_matrix = extract_data_matrix_from_adata(adata, use_rep=use_rep, torch_tensor=False)
+    
+    clf = IsolationForest(random_state=0, contamination=predict_pct).fit(feature_matrix)
+    node_IF_labels = clf.predict(feature_matrix)  # Get the anomaly labels for each data point
     
     adata.obs['isolation'] = node_IF_labels
     adata.obs['isolation'] = adata.obs['isolation'].astype('category')
