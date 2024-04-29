@@ -7,7 +7,7 @@ scDiffusion(Single-Cell graph neural Diffusion) is a physics-informed graph gene
 
 Grab this source codes:
 ```
-git clone https://github.com/...
+git clone https://github.com/CZCBLab/scDiffusion.git
 cd scDiffusion
 ```
 Python=3.9.9 is required. See other requirements in the file requirements.txt.
