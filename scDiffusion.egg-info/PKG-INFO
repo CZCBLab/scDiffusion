@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: scDiffusion
-Version: 0.1
+Version: 1.0
 Summary: scDiffusion(Single-Cell graph neural Diffusion) is a physics-informed graph generative model to do scRNA-seq analysis. scDiffusion investigates cellular dynamics utilizing an attention-based neural network.
 Home-page: https://github.com/CZCBLab/scDiffusion/tree/main
 Author: Yuchen Liu
@@ -12,20 +12,6 @@ Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.9, <3.11
 Description-Content-Type: text/markdown
-Requires-Dist: leidenalg==0.8.10
-Requires-Dist: matplotlib==3.5.1
-Requires-Dist: networkx==2.6.3
-Requires-Dist: numpy==1.22.1
-Requires-Dist: pandas==1.3.5
-Requires-Dist: python_igraph==0.9.9
-Requires-Dist: python_louvain==0.16
-Requires-Dist: scanpy
-Requires-Dist: scikit_learn==1.0.2
-Requires-Dist: scipy==1.7.3
-Requires-Dist: umap_learn==0.5.2
-Requires-Dist: torch==1.13.1
-Requires-Dist: torchvision==0.14.1
-Requires-Dist: torchaudio==0.13.1
 
 # About:
 

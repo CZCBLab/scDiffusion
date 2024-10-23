@@ -19,7 +19,6 @@ def k_means(adata, use_rep='X_dif', k=10):
     adata.obs['k_means'] = kmresult.labels_
     adata.obs['k_means'] = adata.obs['k_means'].astype('category')
 
-    return adata
 
 def leiden(adata, resolution=0.5):
     
@@ -32,7 +31,6 @@ def leiden(adata, resolution=0.5):
     adata.obs['leiden+'] = np.array(partition.membership)
     adata.obs['leiden+'] = adata.obs['leiden+'].astype('category')
 
-    return adata
 
 def louvain(adata, resolution=1.0):
     
@@ -55,12 +53,8 @@ def louvain(adata, resolution=1.0):
     adata.obs['louvain+'] = np.array(labels)
     adata.obs['louvain+'] = adata.obs['louvain+'].astype('category')
 
-    # Print the cluster labels
-    return scdata
 
-
-
-def clustering(adata, resolution=0.5, initial_membership=None):
+def att_leiden(adata, resolution=0.5, initial_membership=None):
     
     edge_index = adata.uns['edge_index']
     weights = adata.uns['adjusted_attention']
@@ -76,8 +70,6 @@ def clustering(adata, resolution=0.5, initial_membership=None):
 
     adata.obs['att_leiden'] = np.array(partition.membership)
     adata.obs['att_leiden'] = adata.obs['att_leiden'].astype('category')
-
-    return adata
 
 
 def evaluate_clustering(cluster, label):

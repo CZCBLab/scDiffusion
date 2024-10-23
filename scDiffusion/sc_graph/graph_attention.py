@@ -1,12 +1,12 @@
 import numpy
 import torch
 
-from ..grand.gnd import Attention_Weight_Sum, Attention_Inner_Product, Attention_Distance
+from ..diffusion.gnd import Attention_Weight_Sum, Attention_Inner_Product, Attention_Distance
 
 
-def call_attention(adata, attention_type=None, num_heads_diffusion=None, dropout=None, device='cpu'):
+def call_attention(adata, use_rep='X_dif', attention_type=None, num_heads_diffusion=None, dropout=None, device='cpu'):
     
-    nodes_features = torch.tensor(adata.obsm['X_dif'], dtype=torch.float32, device=device)
+    nodes_features = torch.tensor(adata.obsm[use_rep], dtype=torch.float32, device=device)
     
     edge_index = torch.tensor(adata.uns['edge_index'], dtype=torch.int64, device=device)
         
@@ -20,7 +20,6 @@ def call_attention(adata, attention_type=None, num_heads_diffusion=None, dropout
     adata.uns['attention'] = attention
     adata.uns['adjusted_attention'] = adjusted_attention
     
-    return adata
 
 def call_gnd_attention(adata, attention_type=None, num_heads_diffusion=None, dropout=None, device='cpu'):
     
@@ -42,8 +41,6 @@ def call_gnd_attention(adata, attention_type=None, num_heads_diffusion=None, dro
         
     adata.uns['gnd_steps_attention'] = attention_list
     adata.uns['gnd_steps_adjusted_attention'] = adjusted_attention_list
-        
-    return adata
         
 
 
