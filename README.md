@@ -1,4 +1,4 @@
-![scDiffusion](https://github.com/CZCBLab/scDiffusion/blob/main/scdiffusion_arc.pdf)
+![scDiffusion](https://github.com/CZCBLab/scDiffusion/blob/main/scdiffusion_arc.png)
 
 # About:
 
