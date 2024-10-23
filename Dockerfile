@@ -12,14 +12,14 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 RUN pip install --upgrade --no-cache \
-    leidenalg==0.8.10 matplotlib==3.5.1 networkx==2.6.3 numpy==1.22.1 pandas==1.3.5 python_igraph==0.9.9 python_louvain==0.16 scikit_learn==1.0.2 scipy==1.7.3 umap_learn==0.5.2
+    leidenalg==0.8.10 matplotlib==3.5.1 networkx==2.6.3 pandas==1.3.5 python_igraph==0.9.9 python_louvain==0.16 scikit_learn==1.0.2 scipy==1.7.3 umap_learn==0.5.2 ipywidgets
 
 # Install PyTorch CUDA
 RUN pip install --upgrade --no-cache \
     torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
 
 # Install scanpy
-RUN pip install --upgrade --no-cache scanpy
+RUN pip install --upgrade --no-cache scanpy numpy==1.26.4
 
 # Install Jupyter
 RUN pip install --upgrade --no-cache jupyterlab notebook

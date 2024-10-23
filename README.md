@@ -1,17 +1,24 @@
 # About:
 
-scDiffusion(Single-Cell graph neural Diffusion) is a physics-informed graph generative model to do scRNA-seq analysis. scDiffusion investigates cellular dynamics utilizing an attention-based neural network. Unlike methods focusing solely on gene expression in individual cells, scDiffusion targets cell-cell association graph by incorporating two distinct physical effects: local and global equilibrium. It has great potential to apply to multiple scenarios in scRNA-seq data analysis. To better understand the model, we implement it to clustering analysis guided by attention-weighted modularity and trajectory prediction directed by inter-cluster attention network. We demonstrate the balance between local and global equilibrium effects are particularly beneficial for clustering and trajectory determination. Within latent clusters, the local equilibrium effect amplifies the attention-weighted modularity during the diffusion process, resulting to improved clustering accuracy. Simultaneously, the global equilibrium effect strengthens inter-relationships among different clusters, aiding in the accurate prediction of trajectories. More importantly, the diffusion model provides an comprehensible and effective method to do data integration. We show scDiffusion can accurately remove batch effects that caused by technical differences with cell type imbalance. As a deep learning neural network with solid mathematical foundations and rich physical explanations, scDiffusion provided a comprehensive generative model based on cell graph diffusion and showed great potential in scRNA-seq data analysis both theoretically and practically.
+scDiffusion(Single-Cell graph neural Diffusion) is a deep diffusion model to leverage multi-scale patterns in single-cell graphs and enhance scRNA-seq analysis. Single-cell transcriptomics are typically analyzed based on gene expression within individual cells and hypothetic cell adjacencies. However, existing computational methods often suffer from a lack of leveraging and integrating multi-scale dependencies in feature space, undermining their effectiveness and robustness in downstream applications like handling of batch effects, cell type identification, and cell fate inference. To tackle this challenge, we introduce scDiffusion to incorporate long-range information propagation among cells to uncover cellular biology from their transcriptomics. scDiffusion integrates both local and global diffusion processes to comprehensively capture cell relationships, ranging from fine-grained structures to large-scale patterns. This approach exhibits great perception of inherent cell types and potential lineages and preserves cell identities in batch-imbalanced datasets. scDiffusion enhances various downstream tasks, including data integration, reference-based cell type annotation, unsupervised clustering, and trajectory inference. 
 
+This repository contains the source code for the paper .
 
 # Installation:
 
 Grab this source codes:
 ```
-git clone https://github.com/CZCBLab/scDiffusion.git
+git clone https://github.com/zhangch/scDiffusion.git
 cd scDiffusion
 ```
 Python=3.9.9 is required. See other requirements in the file requirements.txt.
 
 # Tutorials:
 
-For clustering tasks, please check the notebook file "scDiffusion_clustering_Klein.ipynb". 
+For data integration, please check the notebook file "scDiffusion_tutorial_Data_Integration.ipynb".
+
+For reference-based cell type annotation, please check the notebook file "scDiffusion_tutorial_Annotation_(Label_Transfer).ipynb".
+
+For clustering tasks, please check the notebook file "scDiffusion_tutorial_Clustering.ipynb". 
+
+For trajectory tasks, please check the notebook file "scDiffusion_tutorial_Trajectory_Inference.ipynb".
