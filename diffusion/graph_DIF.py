@@ -4,33 +4,38 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from grand.gnd import GND
+from diffusion.gnd import GND
 from utils import info_log
 from utils.utility_fn import extract_data_matrix_from_adata
 
-def graph_diffusion(adata, use_rep='X_fae', max_epoch=1000, lr=1e-3, device='cpu',
-                           num_features_diffusion=128,
-                           num_heads_diffusion=6,
-                           num_steps_diffusion=8, 
-                           time_increment_diffusion=0.5,
-                           attention_type = 'sum', 
-                           activation=nn.ELU(),
-                           data_dtype = torch.float32,
-                           dropout=0.0, 
-                           encoder=None, 
-                           decoder=None,
-                           log_diffusion=False,
-                           save_model = True,
-                           load_model_state = False,
-                           loss_adj=0.0,
-                           use_adj='adj_edge_index',
-                           loss_reduction = "sum",
-                           rebuild_graph=False,
-                           rebuild_graph_args={
-                               'k_min': 0,
-                               'k_max': 10,
-                               'remov_edge_prob': None,
-                           }
+def graph_diffusion(adata, 
+                    use_rep='X_fae', 
+                    save_key='X_dif', 
+                    max_epoch=2000, 
+                    lr=1e-3, 
+                    device='cpu',
+                    num_features_diffusion=50,
+                    num_heads_diffusion=8,
+                    num_steps_diffusion=8, 
+                    time_increment_diffusion=0.2,
+                    attention_type = 'sum', 
+                    activation=nn.ELU(),
+                    data_dtype = torch.float32,
+                    dropout=0.0, 
+                    encoder=None, 
+                    decoder=[300],
+                    log_diffusion=False,
+                    save_model = True,
+                    load_model_state = False,
+                    loss_adj=0.0,
+                    use_adj='adj_edge_index',
+                    loss_reduction = "sum",
+                    edge_rewire=True,
+                    edge_rewire_args={
+                       'k_min': 0,
+                       'k_max': 50,
+                       'remov_edge_prob': None,
+                    }
                    ):
     
     diffusion_args = {"use_rep": use_rep,
@@ -49,7 +54,7 @@ def graph_diffusion(adata, use_rep='X_fae', max_epoch=1000, lr=1e-3, device='cpu
     
     
     
-    info_log.print('--------> Starting Graph AE ...')
+    info_log.print('--------> Starting graph nueral diffusion ...')
     
     # data
     feature_matrix = extract_data_matrix_from_adata(adata, use_rep=use_rep, torch_tensor=True, 
@@ -89,7 +94,7 @@ def graph_diffusion(adata, use_rep='X_fae', max_epoch=1000, lr=1e-3, device='cpu
                            log_diffusion=log_diffusion,
                            encoder=encoder, 
                            decoder=decoder,
-                           rebuild_graph=rebuild_graph).to(device)
+                           edge_rewire=edge_rewire).to(device)
 
     if load_model_state:
         try: 
@@ -104,8 +109,8 @@ def graph_diffusion(adata, use_rep='X_fae', max_epoch=1000, lr=1e-3, device='cpu
         model_dif.train()
         optimizer.zero_grad()
         
-        if rebuild_graph:
-            data = (feature_matrix, rebuild_graph_args)
+        if edge_rewire:
+            data = (feature_matrix, edge_rewire_args)
         else:
             data = (feature_matrix, edge_index)
 
@@ -146,12 +151,14 @@ def graph_diffusion(adata, use_rep='X_fae', max_epoch=1000, lr=1e-3, device='cpu
         adata.uns['gnd_steps_data'] = []
         for it in range(len(model_dif.diffusion_step_outputs)):
             adata.uns['gnd_steps_data'].append(model_dif.diffusion_step_outputs[it].numpy())
-        
-    adata.obsm['X_dif'] = last_embedding.detach().cpu().numpy()
+    
+    if save_key is None:
+        adata.obsm['X_dif'] = last_embedding.detach().cpu().numpy()
+    else:
+        adata.obsm[save_key] = last_embedding.detach().cpu().numpy()
     
     adata.uns['graph_diffusion_args'] = diffusion_args
         
-    return adata 
 
 
 class Graph_DIF(nn.Module):
@@ -165,7 +172,7 @@ class Graph_DIF(nn.Module):
                            log_diffusion=False,
                            encoder=None, 
                            decoder=None,
-                           rebuild_graph=False):
+                           edge_rewire=True):
         super().__init__()
         
         self.log_diffusion=log_diffusion
@@ -183,7 +190,7 @@ class Graph_DIF(nn.Module):
                            log_diffusion=log_diffusion,
                            encoder=encoder, 
                            decoder=decoder,
-                           rebuild_graph=rebuild_graph)
+                           rebuild_graph=edge_rewire)
 
         self.decode = InnerProductDecoder(0, act=lambda x: x)
         #self.decode = InnerProductDecoder(0, act=torch.sigmoid)

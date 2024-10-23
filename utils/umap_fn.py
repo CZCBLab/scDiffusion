@@ -1,12 +1,9 @@
 import scanpy as sc
 import umap
 import numpy as np
-
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from utils import info_log
-from anndata_metric.concat import concat_adatas, divide_adata
+
 
 def umap_embedding(adata, 
                    data = 'gnd.output',  # 'gnd.input', 'gnd.output', 'gnd.steps'

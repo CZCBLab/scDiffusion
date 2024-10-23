@@ -7,7 +7,7 @@ class GND(nn.Module):
     """
     """
     def __init__(self, num_features_diffusion, num_heads_diffusion=8,
-                 num_steps_diffusion=6, time_increment_diffusion=0.5,
+                 num_steps_diffusion=8, time_increment_diffusion=0.2,
                  attention_type = 'sum', activation=nn.ELU(),
                  dropout=0.0,  
                  log_diffusion=False,

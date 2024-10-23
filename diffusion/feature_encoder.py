@@ -7,9 +7,9 @@ from utils.utility_fn import extract_data_matrix_from_adata
 
 
 def encode_features(adata, 
-                    D_encode_list, 
-                    D_decode_list, 
-                    max_epoch=1000, 
+                    D_encode_list=[2000, 300, 50], 
+                    D_decode_list=[50, 300, 2000], 
+                    max_epoch=2000, 
                     lr=1e-3, 
                     device='cpu', 
                     data_dtype = torch.float32,
@@ -55,7 +55,7 @@ def encode_features(adata,
     adata.obsm['X_fae'] = feature_matrix_encoded.detach().cpu().numpy()
     
     
-    return adata
+    #return adata
 
 
 class Feature_AutoEncoder(nn.Module):

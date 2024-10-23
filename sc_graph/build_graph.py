@@ -5,6 +5,7 @@ from sklearn.ensemble import IsolationForest
 import random
 
 from utils.utility_fn import extract_data_matrix_from_adata
+from utils.utility_fn import prune_edges_with_IF_labels as prune_fn
 
 
 def build_adj_graph(adata, use_rep='X_fae', k=10, data_dtype = torch.float32, device='cpu'):
@@ -23,14 +24,16 @@ def build_adj_graph(adata, use_rep='X_fae', k=10, data_dtype = torch.float32, de
     
     adata.uns['adj_edge_index'] = edge_index.cpu().numpy()
     
-    return adata
 
 
-def build_diffusion_graph(adata, use_rep='X_fae', 
-                          k_min=0, 
-                          k_max=10, 
-                          self_edge = False, remov_edge_prob=None, prune=False, 
-                          data_dtype = torch.float32, device='cpu'):
+def build_diffusion_graph(adata, 
+                          use_rep='X_fae',  
+                          k=10, 
+                          self_edge = False, 
+                          remov_edge_prob=None, 
+                          prune=False, 
+                          data_dtype = torch.float32, 
+                          device='cpu'):
     """
     """
     
@@ -38,8 +41,8 @@ def build_diffusion_graph(adata, use_rep='X_fae',
                                                     data_dtype=data_dtype, device=device)
     node_IF_labels = numpy.array(adata.obs['isolation']) if prune else None
     edge_index = hidden_build_edge_index(feature_matrix, 
-                                         k_min=k_min, 
-                                         k_max=k_max, 
+                                         k_min=0, 
+                                         k_max=k, 
                                          self_edge=self_edge, 
                                          remov_edge_prob=remov_edge_prob, 
                                          node_IF_labels=node_IF_labels,
@@ -47,50 +50,6 @@ def build_diffusion_graph(adata, use_rep='X_fae',
     
     adata.uns['diffusion_edge_index'] = edge_index.cpu().numpy()
     
-    return adata
-
-
-
-def build_image_graph(adata, use_rep='X_fae', k_feature=10, k_space=10, self_edge = False, remov_edge_prob=None, prune=False, 
-                      data_dtype = torch.float32, device='cpu'):
-    """
-    """
-    
-    if k_feature is not None:
-        feature_matrix = extract_data_matrix_from_adata(adata, use_rep=use_rep, torch_tensor=True, 
-                                                    data_dtype=data_dtype, device=device)
-
-        node_IF_labels = numpy.array(adata.obs['isolation']) if prune else None
-        edge_index_feature = hidden_build_edge_index(feature_matrix, 
-                                                     k=k_feature, 
-                                                     self_edge=self_edge, 
-                                                     remov_edge_prob=remov_edge_prob, 
-                                                     node_IF_labels=node_IF_labels,
-                                                     device=device)
-        edge_index_feature = edge_index_feature.cpu().numpy()
-        
-        edge_index = edge_index_feature
-    else:
-        edge_index_feature = None
-    
-    if k_space is not None:
-        coordinates = torch.tensor(adata.obsm['patch_coordinates'], dtype=data_dtype, device=device)
-        
-        edge_index_space = hidden_build_edge_index(coordinates, 
-                                                   k=k_space, 
-                                                   self_edge=self_edge, 
-                                                   remov_edge_prob=remov_edge_prob, 
-                                                   node_IF_labels=node_IF_labels, 
-                                                   device=device)
-        edge_index_space = edge_index_space.cpu().numpy()
-        
-        edge_index = edge_index_space if edge_index_feature is None else numpy.concatenate((edge_index, edge_index_space), axis=1)
-        
-    adata.uns['diffusion_edge_index'] = edge_index
-    
-    return adata
-
-
 
 
 def build_graph(adata, use_rep="X_dif", k=10, self_edge = False, prune=False, data_dtype = torch.float32, device='cpu'):
@@ -111,7 +70,6 @@ def build_graph(adata, use_rep="X_dif", k=10, self_edge = False, prune=False, da
     
     adata.uns['edge_index'] = edge_index
     
-    return adata
 
 
 def build_gnd_steps_graph(adata, k=10, self_edge = False, prune=False, data_dtype = torch.float32, device='cpu'):
@@ -133,7 +91,6 @@ def build_gnd_steps_graph(adata, k=10, self_edge = False, prune=False, data_dtyp
         
     adata.uns['gnd_steps_edge_index'] = gnd_steps_edge_index
         
-    return adata
 
 
 def hidden_build_edge_index(feature_matrix, k_min=0, k_max=10, self_edge=False, remov_edge_prob=None, node_IF_labels=None, device='cpu'):

@@ -13,7 +13,6 @@ def fast_preprocess(adata):
     adata = scale_and_log_transformation(adata, scale=True, scale_factor = 10000, log=True)
     adata = find_highly_variable_genes(adata, n_top_genes=2000, method='product', plot=True)
 
-    return adata
 
 
 def scale_and_log_transformation(adata, scale=True, scale_factor = 10000, log=True):
@@ -31,7 +30,6 @@ def scale_and_log_transformation(adata, scale=True, scale_factor = 10000, log=Tr
     
     adata.X = data
     
-    return adata
 
 
 
@@ -67,7 +65,6 @@ def find_highly_variable_genes(adata, n_top_genes=2000, method='product', plot=T
     if plot:
         plot_variable_gene(variation, mean, gene_idx)
         
-    return adata
 
 def plot_variable_gene(variation, mean, index):
     
@@ -86,7 +83,6 @@ def plot_variable_gene(variation, mean, index):
 
 
     
-
 
 
 
