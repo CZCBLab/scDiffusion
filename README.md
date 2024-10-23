@@ -6,9 +6,13 @@ This repository contains the source code for the paper .
 
 # Installation:
 
-Grab this source codes:
+scDiffusion is available on PyPI. To install scDiffusion, run the following command:
 ```
-git clone https://github.com/zhangch/scDiffusion.git
+pip install scDiffusion
+```
+Or grab this source codes:
+```
+git clone https://github.com/CZCBLab/scDiffusion.git
 cd scDiffusion
 ```
 Python=3.9.9 is required. See other requirements in the file requirements.txt.
