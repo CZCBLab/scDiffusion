@@ -18,6 +18,8 @@ Or grab this source codes:
 git clone https://github.com/CZCBLab/scDiffusion.git
 cd scDiffusion
 ```
+Python=3.9.9 is required. See other requirements in the file requirements.txt.
+
 Run scDiffuision in Docker:
 ```
 git clone https://github.com/CZCBLab/scDiffusion.git
@@ -36,8 +38,6 @@ sudo docker run -it -p 8888:8888 --restart always --gpus all scdiffusion bash
 jupyter notebook --ip="0.0.0.0" --allow-root
 ```
 'scdiffusion' could be changed into your image name. Please refer to [Docker] and [NVIDIA Container Toolkit] for more details about Docker installation.
-
-Python=3.9.9 is required. See other requirements in the file requirements.txt.
 
 # Tutorials:
 
