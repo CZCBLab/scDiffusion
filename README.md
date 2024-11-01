@@ -18,6 +18,25 @@ Or grab this source codes:
 git clone https://github.com/CZCBLab/scDiffusion.git
 cd scDiffusion
 ```
+Run scDiffuision in Docker:
+```
+git clone https://github.com/CZCBLab/scDiffusion.git
+cd scDiffusion
+
+# Build the Docker image
+sudo docker build -t scdiffusion .
+
+# Run Docker container with CPU
+sudo docker run -it -p 8888:8888 --restart always scdiffusion bash
+
+# Or run Docker container with GPU
+sudo docker run -it -p 8888:8888 --restart always --gpus all scdiffusion bash
+
+# Start Jupyter Notebook
+jupyter notebook --ip="0.0.0.0" --allow-root
+```
+'scdiffusion' could be changed into your image name. Please refer to [Docker] and [NVIDIA Container Toolkit] for more details about Docker installation.
+
 Python=3.9.9 is required. See other requirements in the file requirements.txt.
 
 # Tutorials:
@@ -29,3 +48,6 @@ For reference-based cell type annotation, please check the notebook file "scDiff
 For clustering tasks, please check the notebook file "scDiffusion_tutorial_Clustering.ipynb". 
 
 For trajectory tasks, please check the notebook file "scDiffusion_tutorial_Trajectory_Inference.ipynb".
+
+[Docker]: https://docs.docker.com/engine/install/
+[NVIDIA Container Toolkit]: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
