@@ -6,7 +6,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="scDiffusion",
-    version="0.8",
+    version="0.2",
     description='scDiffusion(Single-Cell graph neural Diffusion) is a physics-informed graph generative model to do scRNA-seq analysis. scDiffusion investigates cellular dynamics utilizing an attention-based neural network.',
     author="Yuchen Liu",
     author_email="ycliu137@bu.edu",
