@@ -5,7 +5,7 @@ scDiffusion(Single-Cell graph neural Diffusion) is a deep diffusion model to lev
 
 This repository contains the source code for the paper .
 
-![scDiffusion](https://raw.githubusercontent.com/CZCBLab/scDiffusion/refs/heads/main/scDiffusion_arc_2.png))
+![scDiffusion](https://raw.githubusercontent.com/CZCBLab/scDiffusion/refs/heads/main/scDiffusion_arc_2.png)
 
 # Installation:
 
